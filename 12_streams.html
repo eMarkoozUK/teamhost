@@ -115,77 +115,124 @@
 
 
 
-<!-- CSS Styles -->
+<!-- HTML -->
+<div class="game-lightbox">
+    <a href="https://faf-games.github.io/game/blockblast" 
+       data-type="iframe" 
+       data-caption="Block Blast Game 1.2"
+       data-uk-lightbox="video-autoplay: true">
+        <img class="game-thumb" src="assets/img/streem-item-1.jpg" alt="Block Blast Preview">
+    </a>
+</div>
+
 <style>
-    /* Responsive Iframe Container */
-    .game-container {
-        position: relative;
-        width: 100%;
-        padding-top: 166.66%; /* 6:10.6 aspect ratio (480x800) */
-        max-width: 100%;
-        margin: 0 auto;
+    /* Full-screen enforcement */
+    .game-lightbox .uk-lightbox {
+        background: rgba(0,0,0,0.95) !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-    .game-iframe {
-        position: absolute;
+    /* Iframe container */
+    .game-lightbox .uk-lightbox-content {
+        width: 100% !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    /* Actual iframe styling */
+    .game-lightbox .uk-lightbox-iframe {
+        flex: 1;
+        width: 100% !important;
+        height: 100% !important;
+        border: none !important;
+        margin: 0 !important;
+        min-height: 100vh !important;
+    }
+
+    /* Header with exit button */
+    .game-lightbox .lightbox-header {
+        position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
-        border: none;
+        right: 0;
+        padding: 15px 20px;
+        background: rgba(0,0,0,0.8);
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    /* Lightbox Customization */
-    .uk-lightbox-toolbar {
-        background: rgba(0,0,0,0.7);
+    /* Responsive adjustments */
+    @media (orientation: portrait) {
+        .game-lightbox .uk-lightbox-iframe {
+            width: 100% !important;
+            height: calc(100vh - 60px) !important;
+        }
     }
-    
-    .uk-lightbox-toolbar-icon {
-        color: #fff !important;
+
+    @media (orientation: landscape) {
+        .game-lightbox .uk-lightbox-iframe {
+            width: calc(100vw - 40px) !important;
+            height: calc(100vh - 40px) !important;
+            margin: 20px auto !important;
+        }
+    }
+
+    /* Thumbnail protection */
+    .game-thumb {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        aspect-ratio: 16/9;
+        object-fit: cover;
     }
 </style>
 
-<!-- HTML Structure -->
-<div class="stream-item">
-    <div class="stream-item__box">
-        <div class="stream-item__media" data-uk-lightbox="video-autoplay: true">
-            <a href="https://faf-games.github.io/game/blockblast" 
-               data-type="iframe"
-               data-caption="Block Blast Game 1.1"
-               data-attrs="width: 100%; height: 100%">
-                <img src="assets/img/streem-item-1.jpg" alt="Block Blast Game Preview" />
-            </a>
-            <div class="stream-item__info">
-                <div class="stream-item__status">Live</div>
-                <div class="stream-item__count">2k</div>
-            </div>
-        </div>
-        <div class="stream-item__body">
-            <div class="stream-item__title">Block Blast Game</div>
-            <div class="stream-item__nicname">Game Studio</div>
-            <div class="stream-item__time">Now Playing</div>
-        </div>
-    </div>
-</div>
-
-<!-- Lightbox Template Modification -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    UIkit.util.on('#game-lightbox', 'show', function() {
-        // Add custom close button
-        const lightbox = document.querySelector('.uk-lightbox');
-        const closeBtn = `<button class="uk-lightbox-toolbar-icon uk-close-large" type="button" uk-close></button>`;
+    // Initialize lightbox with dynamic resizing
+    UIkit.util.on('.game-lightbox', 'show', function(e) {
+        const lightbox = e.target;
         
-        // Add game title
-        const title = `<div class="uk-lightbox-toolbar-title" style="color: white; margin-left: 20px;">Block Blast Game</div>`;
-        
-        lightbox.insertAdjacentHTML('beforeend', `${title}${closeBtn}`);
-        
-        // Force fullscreen capability
-        const iframe = document.querySelector('.game-iframe');
-        iframe.setAttribute('allowfullscreen', 'true');
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
+        // Create header
+        const header = document.createElement('div');
+        header.className = 'lightbox-header';
+        header.innerHTML = `
+            <h3 style="color:white;margin:0">Block Blast</h3>
+            <button style="
+                background: #ff4757;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                cursor: pointer;
+                font-size: 1.5rem;
+            " onclick="UIkit.lightbox(lightbox).hide()">&times;</button>
+        `;
+
+        // Insert header
+        const content = lightbox.querySelector('.uk-lightbox-content');
+        content.parentNode.insertBefore(header, content);
+
+        // Force iframe resize
+        const iframe = content.querySelector('iframe');
+        if(iframe) {
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+        }
+
+        // Window resize handler
+        window.addEventListener('resize', function() {
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+        });
     });
 });
 </script>
