@@ -117,34 +117,38 @@
 
 
 
-
- <div class="stream-item__media">
+                <!-- HTML Structure -->
+<div class="stream-item__media game-lightbox">
     <a href="https://faf-games.github.io/game/blockblast" 
        data-type="iframe" 
        data-caption="Block Blast Game"
        data-uk-lightbox="video-autoplay: true">
-        <img src="assets/img/streem-item-1.jpg" alt="Block Blast Game Preview">
+        <img class="game-thumbnail" src="assets/img/streem-item-1.jpg" alt="Block Blast Preview">
     </a>
 </div>
 
-<!-- Add this custom lightbox template -->
-<script type="text/plain" id="lightbox-template">
-    <div class="uk-lightbox uk-open">
-        <div class="lightbox-header">
-            <h3 class="game-title">Block Blast</h3>
-            <button class="exit-button" uk-close></button>
-        </div>
-        <div class="uk-lightbox-content"></div>
-    </div>
-</script>
-
+<!-- Scoped CSS -->
 <style>
-    /* Custom Lightbox Styling */
-    .uk-lightbox {
-        padding: 40px;
+    /* Target only game lightbox thumbnails */
+    .game-lightbox .game-thumbnail {
+        width: 300px; /* Fixed width */
+        height: 200px; /* Fixed height */
+        object-fit: cover;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
     }
-    
-    .lightbox-header {
+
+    .game-lightbox .game-thumbnail:hover {
+        transform: scale(1.03);
+    }
+
+    /* Lightbox modifications (scoped) */
+    .game-lightbox .uk-lightbox {
+        padding: 40px;
+        background: rgba(0,0,0,0.8);
+    }
+
+    .game-lightbox .lightbox-header {
         position: absolute;
         top: -35px;
         left: 0;
@@ -152,59 +156,66 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        z-index: 1000;
     }
-    
-    .game-title {
+
+    .game-lightbox .game-title {
         color: #fff;
-        font-size: 24px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        font-size: 1.5rem;
         margin: 0;
+        padding-left: 15px;
     }
-    
-    .exit-button {
+
+    .game-lightbox .exit-button {
         background: #ff4757;
-        color: white !important;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        color: white;
         border: none;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
         cursor: pointer;
-        transition: transform 0.3s ease;
-    }
-    
-    .exit-button:hover {
-        transform: rotate(90deg);
-    }
-    
-    .uk-lightbox-content {
         position: relative;
-        background: #1a1a1a;
-        border-radius: 8px;
-        overflow: hidden;
+        z-index: 1001;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+        .game-lightbox .game-thumbnail {
+            width: 100%;
+            height: 180px;
+        }
+        
+        .game-lightbox .uk-lightbox {
+            padding: 15px;
+        }
     }
 </style>
 
+<!-- JavaScript with Better Scoping -->
 <script>
-    // Lightbox initialization with custom elements
-    UIkit.util.on('#lightbox-template', 'show', function() {
-        const lightbox = this;
+document.addEventListener('DOMContentLoaded', function() {
+    // Only target game lightboxes
+    UIkit.util.on('.game-lightbox [data-uk-lightbox]', 'show', function(e) {
+        const lightbox = e.target;
+        const content = lightbox.querySelector('.uk-lightbox-content');
         
-        // Add custom header
-        const template = document.getElementById('lightbox-template');
-        const clone = document.importNode(template.content, true);
-        lightbox.panel.replaceChild(clone, lightbox.panel.firstChild);
-        
+        // Create header elements
+        const header = document.createElement('div');
+        header.className = 'lightbox-header';
+        header.innerHTML = `
+            <h3 class="game-title">Block Blast</h3>
+            <button class="exit-button" uk-close></button>
+        `;
+
+        // Insert header before content
+        content.parentNode.insertBefore(header, content);
+
         // Handle exit button
-        lightbox.panel.querySelector('.exit-button').addEventListener('click', () => {
+        header.querySelector('.exit-button').addEventListener('click', function() {
             UIkit.lightbox(lightbox).hide();
         });
     });
-</script>
-                                       
+});
+</script>                       
 
 
 
