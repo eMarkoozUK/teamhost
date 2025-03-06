@@ -116,18 +116,99 @@
                                 <div class="stream-item__box">
 
 
-                                   <!-- Lightbox Container -->
-<div class="stream-item__media" data-uk-lightbox="video-autoplay: true">
-    <!-- Thumbnail Trigger -->
+
+
+ <div class="stream-item__media">
     <a href="https://faf-games.github.io/game/blockblast" 
        data-type="iframe" 
        data-caption="Block Blast Game"
        data-uk-lightbox="video-autoplay: true">
         <img src="assets/img/streem-item-1.jpg" alt="Block Blast Game Preview">
     </a>
+</div>
+
+<!-- Add this custom lightbox template -->
+<script type="text/plain" id="lightbox-template">
+    <div class="uk-lightbox uk-open">
+        <div class="lightbox-header">
+            <h3 class="game-title">Block Blast</h3>
+            <button class="exit-button" uk-close></button>
+        </div>
+        <div class="uk-lightbox-content"></div>
+    </div>
+</script>
+
+<style>
+    /* Custom Lightbox Styling */
+    .uk-lightbox {
+        padding: 40px;
+    }
+    
+    .lightbox-header {
+        position: absolute;
+        top: -35px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+    }
+    
+    .game-title {
+        color: #fff;
+        font-size: 24px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        margin: 0;
+    }
+    
+    .exit-button {
+        background: #ff4757;
+        color: white !important;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    
+    .exit-button:hover {
+        transform: rotate(90deg);
+    }
+    
+    .uk-lightbox-content {
+        position: relative;
+        background: #1a1a1a;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+</style>
+
+<script>
+    // Lightbox initialization with custom elements
+    UIkit.util.on('#lightbox-template', 'show', function() {
+        const lightbox = this;
+        
+        // Add custom header
+        const template = document.getElementById('lightbox-template');
+        const clone = document.importNode(template.content, true);
+        lightbox.panel.replaceChild(clone, lightbox.panel.firstChild);
+        
+        // Handle exit button
+        lightbox.panel.querySelector('.exit-button').addEventListener('click', () => {
+            UIkit.lightbox(lightbox).hide();
+        });
+    });
+</script>
                                        
 
- <div class="stream-item__info">
+
+
+                                             <div class="stream-item__info">
                                             <div class="stream-item__status">Live</div>
                                             <div class="stream-item__count">2k</div>
                                         </div>
