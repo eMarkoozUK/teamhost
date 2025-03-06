@@ -32,6 +32,24 @@ h6 {
     font-weight: 700;
 }
 
+
+/* Force lightbox dimensions */
+.uk-lightbox-iframe {
+    width: 480px !important;
+    height: 800px !important;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+/* Mobile optimization */
+@media (max-width: 640px) {
+    .uk-lightbox-iframe {
+        width: 100% !important;
+        height: 80vh !important;
+    }
+}
+
+
 .uk-text-lead {
     margin-bottom: 15px;
     color: #353535;
