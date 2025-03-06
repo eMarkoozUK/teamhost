@@ -115,13 +115,44 @@
 
 
 
+<!-- CSS Styles -->
+<style>
+    /* Responsive Iframe Container */
+    .game-container {
+        position: relative;
+        width: 100%;
+        padding-top: 166.66%; /* 6:10.6 aspect ratio (480x800) */
+        max-width: 480px;
+        margin: 0 auto;
+    }
+
+    .game-iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    /* Lightbox Customization */
+    .uk-lightbox-toolbar {
+        background: rgba(0,0,0,0.7);
+    }
+    
+    .uk-lightbox-toolbar-icon {
+        color: #fff !important;
+    }
+</style>
+
+<!-- HTML Structure -->
 <div class="stream-item">
     <div class="stream-item__box">
         <div class="stream-item__media" data-uk-lightbox="video-autoplay: true">
             <a href="https://faf-games.github.io/game/blockblast" 
-               data-type="iframe" 
+               data-type="iframe"
                data-caption="Block Blast Game"
-               data-attrs="width: 480; height: 800;">
+               data-attrs="width: 100%; height: 100%">
                 <img src="assets/img/streem-item-1.jpg" alt="Block Blast Game Preview" />
             </a>
             <div class="stream-item__info">
@@ -136,6 +167,28 @@
         </div>
     </div>
 </div>
+
+<!-- Lightbox Template Modification -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    UIkit.util.on('#game-lightbox', 'show', function() {
+        // Add custom close button
+        const lightbox = document.querySelector('.uk-lightbox');
+        const closeBtn = `<button class="uk-lightbox-toolbar-icon uk-close-large" type="button" uk-close></button>`;
+        
+        // Add game title
+        const title = `<div class="uk-lightbox-toolbar-title" style="color: white; margin-left: 20px;">Block Blast Game</div>`;
+        
+        lightbox.insertAdjacentHTML('beforeend', `${title}${closeBtn}`);
+        
+        // Force fullscreen capability
+        const iframe = document.querySelector('.game-iframe');
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+    });
+});
+</script>
 
 
 
